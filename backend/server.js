@@ -20,8 +20,10 @@ const reviewRouter = require("./routes/review.js");
 const signupRouter = require("./routes/signup.js");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 const dbUrl = process.env.ATLASDB_URL;
+//console.log(dbUrl);
+
 
 // Middleware
 
@@ -31,13 +33,14 @@ app.use(express.urlencoded({ extended: true }));
 // Allow both local dev and production frontend
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173", // local
-      "https://homigo-386u.onrender.com/home/listings" // replace with actual Render frontend URL later
-    ],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://homigo-386u.onrender.com"
+        : "http://localhost:5173",
     credentials: true,
   })
 );
+
 
 // MongoDB Connection
 

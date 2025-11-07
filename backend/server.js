@@ -113,11 +113,12 @@ if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  // Catch all other routes → send React index.html
-  app.get("*", (_, res) => {
+  // ✅ Fix for Express 5
+  app.get("/*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
   });
 }
+
 
 
 

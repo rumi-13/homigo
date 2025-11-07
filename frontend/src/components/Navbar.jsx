@@ -107,7 +107,7 @@ const Navbar = () => {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="absolute right-4 top-16 bg-white shadow-xl rounded-2xl p-4 w-48 flex flex-col space-y-3 text-gray-700 font-medium border border-gray-100 animate-slide-down">
+        <div className="absolute right-4 top-18 bg-white shadow-xl rounded-2xl p-4 w-48 flex flex-col space-y-3 text-gray-700 font-medium border border-gray-100 animate-slide-down">
           <Link
             to="/home/listings"
             onClick={() => setMenuOpen(false)}

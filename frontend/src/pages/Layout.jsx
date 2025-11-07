@@ -12,7 +12,7 @@ const Layout = () => {
 
       {/* Main content */}
       {/* Add margin-top equal to the Navbar height instead of big arbitrary padding */}
-      <main className="flex-grow flex flex-col justify-start mt-14 sm:mt-18 md:mt-18 mb-0">
+      <main className="flex-grow flex flex-col justify-start mt-10 sm:mt-14 md:mt-16 mb-0">
         <Outlet />
       </main>
 

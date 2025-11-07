@@ -1,0 +1,15 @@
+/backend/.env
+/backend/node_modules
+/backend/*.log
+/backend/npm-debug.log*
+/frontend/dist
+/frontend/node_modules
+.vite
+.cache
+/frontend/.vite
+/frontend/.cache
+.vscode/
+.DS_Store
+Thumbs.db
+*.pem
+*.key

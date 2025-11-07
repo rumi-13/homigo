@@ -1,0 +1,7 @@
+body{
+  color: black;
+}
+/* Tailwind fix for unwanted overflow */
+body, html {
+  overflow-x: hidden;
+}

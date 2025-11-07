@@ -23,7 +23,6 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const dbUrl = process.env.ATLASDB_URL;
 
-
 // Middleware
 
 app.use(express.json());
@@ -115,7 +114,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   // Catch all other routes → send React index.html
-  app.get("*", (req, res) => {
+  app.get("*", (_, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
   });
 }

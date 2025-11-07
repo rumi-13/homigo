@@ -7,10 +7,10 @@
   "engines": {
     "node": "22.x"
   },
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server.js",
-    "start": "cross-env NODE_ENV=production node server.js"
-  },
+ "scripts": {
+  "dev": "cross-env NODE_ENV=development nodemon server.js",
+  "start": "NODE_ENV=production node server.js"
+},
   "dependencies": {
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",

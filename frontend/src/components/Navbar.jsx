@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
+
+const fetchListings = async () => {
+  const res = await api.get("/api/listings");
+  setListings(res.data);
+};
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -15,7 +20,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchAuthStatus = async () => {
       try {
-        const res = await axios.get("/api/check-auth", { withCredentials: true });
+        const res = await api.get("/api/check-auth");
         setIsLogged(res.data.authenticated);
         setCurrentUser(res.data.user || null);
       } catch (error) {

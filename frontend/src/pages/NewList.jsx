@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Pencil, Image as ImageIcon, DollarSign, MapPin, Home } from "lucide-react";
 
@@ -23,7 +23,7 @@ const NewList = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("/api/check-auth", { withCredentials: true });
+        const res = await api.get("/api/check-auth");
         setIsAuthenticated(res.data.authenticated);
       } catch (err) {
         console.error("Auth check failed:", err);
@@ -66,7 +66,7 @@ const NewList = () => {
     }
 
     try {
-      const res = await axios.post("/api/listings/new", formData, { withCredentials: true });
+      const res = await api.post("/api/listings/new", formData);
       navigate(res.data.redirectUrl || "/home/listings");
     } catch (err) {
       if (err.response?.status === 401) {

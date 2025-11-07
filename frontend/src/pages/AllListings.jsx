@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import ListingCard from "../components/ListingCard";
 import FiltersBar from "../components/FiltersBar";
 
@@ -11,7 +11,7 @@ const AllListings = () => {
   useEffect(() => {
     const fetchAllListings = async () => {
       try {
-        const response = await axios.get("/api/listings");
+        const response = await api.get("/api/listings");
         setListings(response.data);
       } catch (error) {
         console.error("Error fetching listings:", error);

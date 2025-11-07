@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import Review from "../components/Review";
 import ReviewList from "../components/ReviewList";
 
@@ -14,11 +14,11 @@ const ShowList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const authRes = await axios.get("/api/check-auth");
+        const authRes = await api.get("/api/check-auth");
         setCurrentUser(authRes.data.user);
         setIsLogged(authRes.data.authenticated);
 
-        const listRes = await axios.get(`/api/listings/${id}`);
+        const listRes = await api.get(`/api/listings/${id}`);
         setListData(listRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -29,7 +29,7 @@ const ShowList = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/listings/delete/${id}`);
+      await api.delete(`/api/listings/delete/${id}`);
       navigate("/home/listings");
     } catch (error) {
       console.error(error);

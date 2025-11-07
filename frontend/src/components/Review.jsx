@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { Star } from "lucide-react";
 import { useParams } from "react-router-dom";
 
@@ -40,7 +40,7 @@ const Review = () => {
 
     try {
       setLoading(true);
-      await axios.post(`/api/listings/${id}/reviews`, {
+      await api.post(`/api/listings/${id}/reviews`, {
         review: { rating, comment },
       });
       setSuccess("Your review has been posted successfully!");

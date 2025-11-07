@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { Mail, User, LogOut, List } from "lucide-react";
 
@@ -11,7 +11,7 @@ const Profile = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("/api/check-auth", { withCredentials: true });
+        const res = await api.get("/api/check-auth");
         if (res.data.authenticated) {
           setUser(res.data.user);
         } else {
@@ -29,7 +29,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/api/logout", {}, { withCredentials: true });
+      await api.post("/api/logout", {});
       navigate("/login");
     } catch (err) {
       console.error("Logout failed:", err);

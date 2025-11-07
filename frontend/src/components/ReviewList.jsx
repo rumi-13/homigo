@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Star, Trash2 } from "lucide-react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 
 const ReviewList = ({ currentUser }) => {
   const { id } = useParams();
@@ -10,7 +10,7 @@ const ReviewList = ({ currentUser }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`/api/listings/${id}/reviews`);
+        const response = await api.get(`/api/listings/${id}/reviews`);
         setReviews(response.data.reviews);
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -21,7 +21,7 @@ const ReviewList = ({ currentUser }) => {
 
   const handleDelete = async (reviewId) => {
     try {
-      await axios.delete(`/api/listings/${id}/reviews/${reviewId}`);
+      await api.delete(`/api/listings/${id}/reviews/${reviewId}`);
       setReviews((prev) => prev.filter((r) => r._id !== reviewId));
     } catch (error) {
       console.error("Error deleting review:", error);

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 
-axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.withCredentials = true;
+
 
 const SignupLogin = () => {
   const navigate = useNavigate();
@@ -44,14 +43,14 @@ const SignupLogin = () => {
       const url = isLogin ? "/api/login" : "/api/signup";
       const payload = isLogin ? { email, password } : { username, email, password };
 
-      const { data } = await axios.post(url, payload);
+      const { data } = await api.post(url, payload);
       setMessage({ type: "success", text: data.message || "Success!" });
 
       setUsername("");
       setEmail("");
       setPassword("");
 
-      const authRes = await axios.get("/api/check-auth");
+      const authRes = await api.get("/api/check-auth");
       if (authRes.data.authenticated) {
         const from = location.state?.from || "/home";
         navigate(from, { replace: true });

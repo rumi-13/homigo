@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Pencil, MapPin, Image as ImageIcon, DollarSign, Home } from "lucide-react";
 
@@ -23,7 +23,7 @@ const EditList = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("/api/check-auth", { withCredentials: true });
+        const res = await api.get("/api/check-auth");
         setIsAuthenticated(res.data.authenticated);
       } catch (err) {
         console.error("Auth check failed:", err);
@@ -45,7 +45,7 @@ const EditList = () => {
     if (!isAuthenticated || loadingAuth) return;
     const fetchListing = async () => {
       try {
-        const response = await axios.get(`/api/listings/${id}`, { withCredentials: true });
+        const response = await api.get(`/api/listings/${id}`);
         setFormData({
           title: response.data.title || "",
           description: response.data.description || "",
@@ -69,7 +69,7 @@ const EditList = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`/api/listings/edit/${id}`, formData, { withCredentials: true });
+      await api.patch(`/api/listings/edit/${id}`, formData);
       navigate("/home/listings");
     } catch (error) {
       if (error.response?.status === 401) navigate("/login");

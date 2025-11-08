@@ -24,10 +24,7 @@ const PORT = process.env.PORT || 8080;
 const dbUrl = process.env.ATLASDB_URL;
 const isProduction = process.env.NODE_ENV === "production";
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.set("trust proxy", 1);
 // CORS FIX — allow both environments
 app.use(
   cors({
@@ -38,6 +35,8 @@ app.use(
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
 mongoose

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api/axios";
 
@@ -13,6 +13,7 @@ const Navbar = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const inputRef = useRef(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,12 +35,15 @@ const Navbar = () => {
     fetchAuthStatus();
   }, [location.pathname]);
 
+  const focusInput = () => {
+    inputRef.current.focus(); // 👈 moves cursor into input
+  };
+
   if (loading) return null;
 
   return (
     <nav className="fixed top-0 left-0 w-full border-b border-gray-200 bg-white/90 backdrop-blur-md shadow-md z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-3 sm:px-5 md:px-8 py-2 sm:py-3 md:py-4">
-        
         {/* Left: Logo */}
         <Link
           to="/home"
@@ -54,25 +58,35 @@ const Navbar = () => {
           <div className="relative w-full max-w-md">
             <input
               type="text"
+              ref={inputRef}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search destinations"
               className="w-full rounded-full border border-gray-300 pl-4 pr-10 py-2 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
             <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-pink-500 text-white px-4 py-1 rounded-full hover:bg-pink-600 transition-colors">
-              <i className="fa-solid fa-magnifying-glass"></i>
+              <i
+                className="fa-solid fa-magnifying-glass"
+                onClick={focusInput}
+              ></i>
             </button>
           </div>
         </div>
 
         {/* Right: Desktop links */}
         <div className="hidden md:flex items-center space-x-6 lg:space-x-10 text-gray-700 font-medium">
-          <Link to="/home/listings" className="hover:text-pink-600 transition-colors">
+          <Link
+            to="/home/listings"
+            className="hover:text-pink-600 transition-colors"
+          >
             Explore
           </Link>
           {isLogged ? (
             <>
-              <Link to="/home/listings/new" className="hover:text-pink-600 transition-colors">
+              <Link
+                to="/home/listings/new"
+                className="hover:text-pink-600 transition-colors"
+              >
                 Add Listing
               </Link>
               <Link
@@ -122,7 +136,8 @@ const Navbar = () => {
                 onClick={() => setMenuOpen(false)}
                 className="hover:text-pink-600 transition-colors text-sm"
               >
-                <i className="fa-solid fa-plus text-pink-500 mr-2"></i> Add Listing
+                <i className="fa-solid fa-plus text-pink-500 mr-2"></i> Add
+                Listing
               </Link>
               <Link
                 to="/home/profile"
@@ -138,7 +153,8 @@ const Navbar = () => {
               onClick={() => setMenuOpen(false)}
               className="hover:text-pink-600 transition-colors text-sm"
             >
-              <i className="fa-solid fa-right-to-bracket text-pink-500 mr-2"></i> Login
+              <i className="fa-solid fa-right-to-bracket text-pink-500 mr-2"></i>{" "}
+              Login
             </Link>
           )}
         </div>

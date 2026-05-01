@@ -2,16 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api/axios";
 
-const fetchListings = async () => {
-  const res = await api.get("/api/listings");
-  setListings(res.data);
-};
-
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -90,59 +84,24 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile hamburger */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-gray-700 hover:text-pink-600 focus:outline-none"
-          >
-            <i
-              className={`fa-solid ${
-                menuOpen ? "fa-xmark" : "fa-bars"
-              } text-xl transition-transform duration-300`}
-            ></i>
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile dropdown */}
-      {menuOpen && (
-        <div className="absolute right-4 top-18 bg-white shadow-xl rounded-2xl p-4 w-48 flex flex-col space-y-3 text-gray-700 font-medium border border-gray-100 animate-slide-down">
-          <Link
-            to="/home/listings"
-            onClick={() => setMenuOpen(false)}
-            className="hover:text-pink-600 transition-colors text-sm"
-          >
-            <i className="fa-solid fa-compass text-pink-500 mr-2"></i> Explore
-          </Link>
+        {/* Mobile: Auth Links (visible only on mobile/tablet) */}
+        <div className="md:hidden flex items-center space-x-4 text-gray-700 font-medium">
           {isLogged ? (
             <>
-              <Link
-                to="/home/listings/new"
-                onClick={() => setMenuOpen(false)}
-                className="hover:text-pink-600 transition-colors text-sm"
-              >
-                <i className="fa-solid fa-plus text-pink-500 mr-2"></i> Add Listing
+              <Link to="/home/listings/new" className="text-pink-600">
+                <i className="fa-solid fa-plus text-xl"></i>
               </Link>
-              <Link
-                to="/home/profile"
-                onClick={() => setMenuOpen(false)}
-                className="hover:text-pink-600 transition-colors text-sm"
-              >
-                <i className="fa-solid fa-user text-pink-500 mr-2"></i> Profile
+              <Link to="/home/profile" className="text-pink-600">
+                <i className="fa-solid fa-user text-xl"></i>
               </Link>
             </>
           ) : (
-            <Link
-              to="/login"
-              onClick={() => setMenuOpen(false)}
-              className="hover:text-pink-600 transition-colors text-sm"
-            >
-              <i className="fa-solid fa-right-to-bracket text-pink-500 mr-2"></i> Login
+            <Link to="/login" className="text-pink-600 text-sm sm:text-base font-semibold">
+              Login
             </Link>
           )}
         </div>
-      )}
+      </div>
     </nav>
   );
 };

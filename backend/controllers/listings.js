@@ -18,7 +18,6 @@ module.exports.getSingleListing = async (req, res) => {
   .populate("owner", "username email"); // also populate owner if you need
     
     if (!list) throw new ExpressError(404, "Listing not found");
-    console.log(list);
 
     res.status(200).json(list);
   }

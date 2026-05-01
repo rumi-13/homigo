@@ -7,14 +7,18 @@ import FiltersBar from "../components/FiltersBar";
 const AllListings = () => {
   const [listings, setListings] = useState([]);
   const [showTax, setShowTax] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllListings = async () => {
+      setLoading(true);
       try {
         const response = await api.get("/api/listings");
         setListings(response.data);
       } catch (error) {
         console.error("Error fetching listings:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAllListings();
@@ -41,71 +45,68 @@ const AllListings = () => {
         <FiltersBar isOn={showTax} onToggle={() => setShowTax(!showTax)} />
       </div>
 
-      {/* Listings Grid */}
-      {listings.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <i className="fa-solid fa-house-circle-xmark text-gray-400 text-5xl mb-4"></i>
-          <p className="text-gray-600 text-lg font-medium">
-            No listings available right now.
-          </p>
-          <p className="text-gray-400 text-sm mt-1">
-            Try adding one or check back later.
-          </p>
-        </div>
-      ) : (
-        <div
-          className="
-            grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
-            gap-8 w-full max-w-7xl pb-16
-          "
-        >
-          {listings.map((list) => (
-            <Link
-              key={list._id}
-              to={`/home/listings/${list._id}`}
-              className="group transform transition duration-300 hover:-translate-y-1 hover:scale-[1.01]"
-            >
-              <div className="bg-white/90 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full">
-                {/* Image */}
-                <div className="relative h-52 sm:h-56 md:h-60 overflow-hidden">
-                  <img
-                    src={
-                      list.image ||
-                      "https://via.placeholder.com/400x300.png?text=No+Image"
-                    }
-                    alt={list.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                  <div className="absolute bottom-3 left-4 text-white text-sm font-medium drop-shadow">
-                    {list.location}, {list.country}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-4 sm:p-5 flex flex-col flex-grow">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-00 truncate group-hover:text-pink-600 transition-colors">
-                    {list.title}
-                  </h2>
-                  <p className="text-gray-800 font-bold text-base mt-1 flex-grow">
-                    {showTax ? (
-                      <>
-                        ₹{calculatePrice(list.price)}{" "}
-                        <span className="text-gray-500 text-xs">
-                          (incl. 18% tax)
-                        </span>
-                      </>
-                    ) : (
-                      <>₹{list.price}</>
-                    )}
-                  </p>
+      {/* Grid Container */}
+      <div className="w-full max-w-7xl pb-16">
+        {loading ? (
+          /* Skeleton Loader Grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white/90 rounded-2xl overflow-hidden shadow-sm animate-pulse border border-gray-100">
+                <div className="h-52 sm:h-56 md:h-60 bg-gray-200"></div>
+                <div className="p-5 space-y-3">
+                  <div className="h-5 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
                 </div>
               </div>
-            </Link>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        ) : listings.length === 0 ? (
+          /* Empty State - Only shows if NOT loading and NO listings */
+          <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
+            <i className="fa-solid fa-house-circle-xmark text-gray-400 text-5xl mb-4"></i>
+            <p className="text-gray-600 text-lg font-medium">No listings available right now.</p>
+            <p className="text-gray-400 text-sm mt-1">Try adding one or check back later.</p>
+          </div>
+        ) : (
+          /* Actual Listings Grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 animate-fade-in">
+            {listings.map((list) => (
+              <Link
+                key={list._id}
+                to={`/home/listings/${list._id}`}
+                className="group transform transition duration-300 hover:-translate-y-1 hover:scale-[1.01]"
+              >
+                <div className="bg-white/90 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col h-full">
+                  <div className="relative h-52 sm:h-56 md:h-60 overflow-hidden">
+                    <img
+                      src={list.image || "https://via.placeholder.com/400x300.png?text=No+Image"}
+                      alt={list.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    <div className="absolute bottom-3 left-4 text-white text-sm font-medium drop-shadow">
+                      {list.location}, {list.country}
+                    </div>
+                  </div>
+                  <div className="p-4 sm:p-5 flex flex-col flex-grow">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 truncate group-hover:text-pink-600 transition-colors">
+                      {list.title}
+                    </h2>
+                    <p className="text-gray-800 font-bold text-base mt-1">
+                      {showTax ? (
+                        <>₹{calculatePrice(list.price)} <span className="text-gray-500 text-xs">(incl. 18% tax)</span></>
+                      ) : (
+                        <>₹{list.price}</>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

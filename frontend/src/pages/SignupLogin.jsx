@@ -26,6 +26,14 @@ const SignupLogin = () => {
       setMessage({ type: "error", text: "Email and password are required." });
       return false;
     }
+    
+    // Basic Email Regex for client-side validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setMessage({ type: "error", text: "Please provide a valid email (e.g., name@example.com)" });
+      return false;
+    }
+
     if (!isLogin && !username.trim()) {
       setMessage({ type: "error", text: "Username is required for signup." });
       return false;

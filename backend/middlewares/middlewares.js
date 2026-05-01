@@ -1,7 +1,18 @@
 const Listing = require("../models/listing.js");
 const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema } = require("./schema.js");
+const { listingSchema, userSchema } = require("./schema.js");
 const Review = require('../models/review.js')
+
+module.exports.validateUser = (req, res, next) => {
+  const isSignup = req.path === "/signup";
+  const { error } = userSchema.validate(req.body, { context: { isSignup } });
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, msg);
+  }
+  next();
+};
+
 module.exports.isOwner = async (req, res, next) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);

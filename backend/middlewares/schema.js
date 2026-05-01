@@ -18,6 +18,18 @@ module.exports.reviewSchema = Joi.object({
     }).required()  
 })
 
+module.exports.userSchema = Joi.object({
+  username: Joi.string().when('$isSignup', {
+    is: true,
+    then: Joi.required(),
+    otherwise: Joi.optional()
+  }),
+  email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'org', 'in', 'io'] } }).required().messages({
+    'string.email': 'Please provide a valid email with a domain (e.g., .com, .in)',
+  }),
+  password: Joi.string().required().min(6),
+});
+
 
 module.exports.validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);

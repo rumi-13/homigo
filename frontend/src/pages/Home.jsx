@@ -37,8 +37,6 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  if (loading) return null;
-
   return (
     <div className="relative w-full h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] overflow-hidden flex items-center justify-center">
       
@@ -55,6 +53,8 @@ const Home = () => {
               src={img}
               alt={`Slide ${index}`}
               className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "low"}
             />
             {/* Enhanced Gradient Overlay for maximum text contrast */}
             <div className="absolute inset-0 bg-black/50 bg-gradient-to-b from-black/20 via-black/40 to-black/60"></div>
@@ -71,7 +71,11 @@ const Home = () => {
           Discover unique stays and unforgettable experiences around the world.
         </p>
 
-        {isLogged ? (
+        {loading ? (
+           <div className="h-16 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+           </div>
+        ) : isLogged ? (
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/home/listings"

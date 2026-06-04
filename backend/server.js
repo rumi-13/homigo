@@ -30,7 +30,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",            // local dev frontend
-      "https://homigo-386u.onrender.com"  // production frontend (Render)
+      "https://homigo-y2n1.onrender.com"  // production frontend (Render)
     ],
     credentials: true,
   })
